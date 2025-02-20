@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Groups extends Model
+class Room extends Model
 {
-    /** @use HasFactory<\Database\Factories\GroupsFactory> */
+    /** @use HasFactory<\Database\Factories\RoomsFactory> */
     use HasFactory;
 
     protected $fillable = [
