@@ -20,7 +20,7 @@ class GroupController extends Controller
             $query->where('name', 'like', '%' . $request->get('search') . '%');
         }
 
-        if ($request->has('sort')) {
+        if ($request->has('sort') && in_array(strtolower($request->get('sort')), ['asc', 'desc'])) {
             $query->orderBy('created_at', $request->get('sort'));
         }
 
