@@ -76,7 +76,7 @@ class RoomController extends Controller
         $validator = $request->validate([
             'name' => 'required',
         ]);
-        $room->query()->update($validator);
+        $room->update($validator);
         return response()->json(['message' => 'Room updated successfully.']);
 
     }
