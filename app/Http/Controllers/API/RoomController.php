@@ -21,9 +21,8 @@ class RoomController extends Controller
             $query->where('name', 'like', '%' . $request->get('search') . '%');
         }
 
-        if ($request->has('sort_by_date')) {
-            $query->where('created_at', 'like', '%' . $request->get('sort_by_date') . '%');
-            $query->orderByDesc('created_at');
+        if ($request->has('sort')) {
+            $query->orderBy('created_at', $request->get('sort'));
         }
 
         $rooms = $query->paginate($perPage);

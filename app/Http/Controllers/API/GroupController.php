@@ -20,9 +20,8 @@ class GroupController extends Controller
             $query->where('name', 'like', '%' . $request->get('search') . '%');
         }
 
-        if ($request->has('sort_by_date')) {
-            $query->where('created_at', '>=', $request->get('sort_by_date'));
-            $query->orderByDesc('created_at');
+        if ($request->has('sort')) {
+            $query->orderBy('created_at', $request->get('sort'));
         }
 
         $groups = $query->paginate($perPage);

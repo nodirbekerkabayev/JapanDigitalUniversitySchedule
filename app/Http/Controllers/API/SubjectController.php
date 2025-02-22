@@ -19,9 +19,8 @@ class SubjectController extends Controller
         if($request->has('search')) {
             $query->where('name', 'like', '%' . $request->get('search') . '%');
         }
-        if($request->has('sort_by_date')) {
-            $query->where('created_at', '>=', $request->get('sort_by_date'));
-            $query->orderBy('created_at', 'DESC');
+        if($request->has('sort')) {
+            $query->orderBy('created_at', $request->get('sort'));
         }
 
         $subjects = $query->paginate($perPage);
