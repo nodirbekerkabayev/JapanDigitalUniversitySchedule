@@ -13,4 +13,14 @@ class Subject extends Model
     protected $fillable = [
         'name'
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'subject_teachers', 'subject_id', 'user_id');
+    }
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'group_subjects', 'subject_id', 'group_id');
+    }
 }

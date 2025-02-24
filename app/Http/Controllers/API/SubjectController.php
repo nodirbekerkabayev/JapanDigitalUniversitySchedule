@@ -46,7 +46,11 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-
+        $validator = $request->validate([
+            'name' => 'required',
+        ]);
+        $subject = Subject::query()->create($validator);
+        return response()->json(['message' => 'Subject created successfully.', 'subject' => $subject], 201);
     }
 
     /**

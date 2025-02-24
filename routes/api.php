@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\GroupController;
+use App\Http\Controllers\API\GroupMemberController;
+use App\Http\Controllers\API\GroupSubjectController;
 use App\Http\Controllers\API\RoomController;
 use App\Http\Controllers\API\SubjectController;
+use App\Http\Controllers\API\SubjectTeacherController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,24 +21,12 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::get('logout', [AuthController::class, 'logout']);
 
-    Route::prefix('subjects')->group(function () {
-        Route::get('/', [SubjectController::class, 'index']);
-        Route::get('/{subject}', [SubjectController::class, 'show']);
-        Route::put('/{subject}', [SubjectController::class, 'update']);
-        Route::delete('/{subject}', [SubjectController::class, 'destroy']);
-    });
+    Route::resource('subjects', SubjectController::class);
+    Route::resource('groups', GroupController::class);
+    Route::resource('rooms', RoomController::class);
 
-    Route::prefix('groups')->group(function () {
-        Route::get('/', [GroupController::class, 'index']);
-        Route::get('/{group}', [GroupController::class, 'show']);
-        Route::put('/{group}', [GroupController::class, 'update']);
-        Route::delete('/{group}', [GroupController::class, 'destroy']);
-    });
+    Route::resource('group-members', GroupMemberController::class);
+    Route::resource('group-subjects', GroupSubjectController::class);
+    Route::resource('subject-teachers', SubjectTeacherController::class);
 
-    Route::prefix('rooms')->group(function () {
-        Route::get('/', [RoomController::class, 'index']);
-        Route::get('/{room}', [RoomController::class, 'show']);
-        Route::put('/{room}', [RoomController::class, 'update']);
-        Route::delete('/{room}', [RoomController::class, 'destroy']);
-    });
 });

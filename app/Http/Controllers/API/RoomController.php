@@ -48,7 +48,11 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'name' => 'required',
+        ]);
+        $room = Room::query()->create($validator);
+        return response()->json(['message' => 'Room created successfully.', 'room' => $room], 201);
     }
 
     /**

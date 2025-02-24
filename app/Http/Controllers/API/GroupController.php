@@ -45,7 +45,11 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'name' => 'required',
+        ]);
+        $group = Group::query()->create($validator);
+        return response()->json(['message' => 'Group created successfully.', 'group' => $group], 201);
     }
 
     /**
