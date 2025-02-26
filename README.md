@@ -43,11 +43,7 @@ Lesson Schedule API is a Laravel-based RESTful API for managing lesson schedules
    ```bash
    php artisan migrate --seed
    ```
-7. Install and configure Laravel Passport:
-   ```bash
-   php artisan passport:install
-   ```
-8. Start the application:
+7. Start the application:
    ```bash
    php artisan serve
    ```
