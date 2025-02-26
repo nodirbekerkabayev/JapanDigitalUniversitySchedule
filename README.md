@@ -85,8 +85,7 @@ Lesson Schedule API uses Laravel Passport for authentication.
 For a full API documentation, refer to the Postman Collection.
 
 ## 📄 Postman Collection
-Import the Postman Collection JSON file to test the API endpoints:
-- [Download Postman Collection](./jduSchedule.postman_collection.json)
+View the full API documentation here: [Lesson Schedule API Documentation](https://documenter.getpostman.com/view/40394802/2sAYdfpVyZ)
 
 ## 📌 Notes
 - Ensure that the `.env` file is properly configured.
