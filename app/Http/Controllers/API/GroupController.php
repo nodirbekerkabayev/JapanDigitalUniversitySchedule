@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GroupRequest;
 use App\Models\Group;
+use App\Services\GroupService;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
@@ -31,11 +33,9 @@ class GroupController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create(GroupRequest $request)
     {
-        $validator = $request->validate([
-            'name' => 'required',
-        ]);
+        $validator = $request->validated();
         Group::query()->create($validator);
         return response()->json(['message' => 'Group created successfully.']);
     }
@@ -43,11 +43,9 @@ class GroupController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(GroupRequest $request)
     {
-        $validator = $request->validate([
-            'name' => 'required',
-        ]);
+        $validator = $request->validated();
         $group = Group::query()->create($validator);
         return response()->json(['message' => 'Group created successfully.', 'group' => $group], 201);
     }
@@ -61,21 +59,11 @@ class GroupController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Group $group)
+    public function update(GroupRequest $request, Group $group)
     {
-        $validator = $request->validate([
-            'name' => 'required',
-        ]);
+        $validator = $request->validated();
         $group->update($validator);
         return response()->json(['message' => 'Group updated successfully.']);
 

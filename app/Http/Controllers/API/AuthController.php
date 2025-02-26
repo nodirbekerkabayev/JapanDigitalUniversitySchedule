@@ -3,33 +3,31 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AuthLoginRequest;
+use App\Http\Requests\AuthRegisterRequest;
 use App\Models\User;
+use App\Services\AuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    public function register(AuthRegisterRequest $request)
     {
-        $validator = $request->validate([
-            'name' => 'required|string|max:255|min:3',
-            'email' => 'required|string|email|max:255|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+        $validator = $request->validated();
         User::query()->create($validator);
         return response(['message' => 'User successfully registered'], 201);
     }
 
-    public function login(Request $request)
+    public function login(AuthLoginRequest $request)
     {
-        $validator = $request->validate([
-            'email' => 'required|string|email|max:255,exists:users,email',
-            'password' => 'required|string|min:8',
-        ]);
+        $validator = $request->validated();
+
         $email = $validator['email'];
         $password = $validator['password'];
         $user = User::query()->where('email', $email)->first();
+
         if (!$user || !Hash::check($password, $user->password)) {
             return response(['message' => 'Invalid Credentials'], 401);
         }

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RoomRequest;
 use App\Models\Group;
 use App\Models\Room;
+use App\Services\RoomService;
 use Illuminate\Http\Request;
 
 class RoomController extends Controller
@@ -33,11 +35,9 @@ class RoomController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create(RoomRequest $request)
     {
-        $validator = $request->validate([
-            'name' => 'required',
-        ]);
+        $validator = $request->validated();
         Room::query()->create($validator);
         return response()->json(['message' => 'Room created successfully.']);
 
@@ -46,11 +46,9 @@ class RoomController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RoomRequest $request)
     {
-        $validator = $request->validate([
-            'name' => 'required',
-        ]);
+        $validator = $request->validated();
         $room = Room::query()->create($validator);
         return response()->json(['message' => 'Room created successfully.', 'room' => $room], 201);
     }
@@ -64,21 +62,11 @@ class RoomController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Room $room)
+    public function update(RoomRequest $request, Room $room)
     {
-        $validator = $request->validate([
-            'name' => 'required',
-        ]);
+        $validator = $request->validated();
         $room->update($validator);
         return response()->json(['message' => 'Room updated successfully.']);
 

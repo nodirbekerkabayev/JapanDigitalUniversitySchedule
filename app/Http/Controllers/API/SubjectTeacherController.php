@@ -3,57 +3,24 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SubjectTeacherRequest;
 use App\Models\Group;
 use App\Models\Subject;
 use App\Models\User;
+use App\Services\SubjectTeacherService;
 use Illuminate\Http\Request;
 
 class SubjectTeacherController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Store a newly created resource in storage.
      */
-    public function index(Request $request)
+    public function index(SubjectTeacherRequest $request)
     {
-        $validator = $request->validate([
-            'subject_id' => 'required',
-            'user_id' => 'required',
-        ]);
+        $validator = $request->validated();
         $user = User::query()->findOrFail($request->get($validator["user_id"]));
         $user->subjects()->attach($request->get('subject_id'));
         return response()->json(['message' => 'Subject teacher successfully assigned.']);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
@@ -67,12 +34,9 @@ class SubjectTeacherController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, string $id)
+    public function destroy(SubjectTeacherRequest $request, string $id)
     {
-        $validator = $request->validate([
-            'user_id' => 'required',
-            'subject_id' => 'required',
-        ]);
+        $validator = $request->validated();
         $user = User::query()->findOrFail($validator["user_id"]);
         $user->subjects()->detach();
         $user->delete();

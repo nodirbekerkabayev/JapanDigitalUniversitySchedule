@@ -3,55 +3,22 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RoleUserRequest;
 use App\Models\User;
+use App\Services\RoleUserService;
 use Illuminate\Http\Request;
 
 class RoleUserController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RoleUserRequest $request)
     {
-        $validator = $request->validate([
-            'role_id' => 'required|exists:roles,id',
-            'user_id' => 'required|exists:users,id',
-        ]);
+        $validator = $request->validated();
         $user = User::query()->find($validator['user_id']);
         $user->roles()->attach($request->get('role_id'));
         return response()->json(['message' => 'Role added successfully.']);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
@@ -65,12 +32,9 @@ class RoleUserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id, Request $request)
+    public function destroy(RoleUserRequest $request)
     {
-        $validator = $request->validate([
-            'role_id' => 'required',
-            'user_id' => 'required',
-        ]);
+        $validator = $request->validated();
         $user = User::query()->find($validator['user_id']);
         $user->roles()->detach();
         $user->delete();
