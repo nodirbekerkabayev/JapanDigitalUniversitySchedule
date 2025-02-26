@@ -6,9 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\AuthRegisterRequest;
 use App\Models\User;
-use App\Services\AuthService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -17,7 +15,7 @@ class AuthController extends Controller
     {
         $validator = $request->validated();
         User::query()->create($validator);
-        return response(['message' => 'User successfully registered'], 201);
+        return success();
     }
 
     public function login(AuthLoginRequest $request)
@@ -32,12 +30,12 @@ class AuthController extends Controller
             return response(['message' => 'Invalid Credentials'], 401);
         }
         $token = $user->createToken('token')->plainTextToken;
-        return response(['message'=> 'Logged in successfully', 'token' => $token, 'user' => $user]);
+        return success($token);
     }
 
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
-        return response(['message' => 'Logged out']);
+        return success();
     }
 }

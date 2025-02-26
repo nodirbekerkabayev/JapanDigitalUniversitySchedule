@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ScheduleRequest;
+use App\Http\Requests\StoreScheduleRequest;
+use App\Http\Requests\UpdateScheduleRequest;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,7 @@ class ScheduleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ScheduleRequest $request)
+    public function store(StoreScheduleRequest $request)
     {
         $validated = $request->validated();
         $schedule = Schedule::query()
@@ -31,13 +32,13 @@ class ScheduleController extends Controller
             ->where('group_id', $validated['group_id'])
             ->where('room_id', $validated['room_id'])
             ->where('pair', $validated['pair'])
-            ->where('weekday', $validated['weekday'])
+            ->where('week_day', $validated['week_day'])
             ->where('date', $validated['date'])
             ->first();
         if ($schedule) {
             return response()->json(['message'=>'Schedule already exists.'], 400);
         }
-        Schedule::query()->create([$validated]);
+        Schedule::query()->create($validated);
         return response()->json(['message' => 'Schedule created successfully.']);
     }
 
@@ -52,15 +53,22 @@ class ScheduleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateScheduleRequest $request, $id)
     {
-        //
+        $validated = $request->validated();
+
+        $schedule = Schedule::query()->findOrFail($id); // ID bo‘yicha modelni topamiz
+
+        $schedule->update($validated); // Shu modelni yangilaymiz
+
+        return response()->json(['message' => 'Schedule updated successfully.']);
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Schedule $schedule, string $id)
+    public function destroy(Schedule $schedule)
     {
         $schedule->delete();
         return response()->json(['message' => 'Schedule deleted successfully.']);
