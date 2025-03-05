@@ -14,8 +14,8 @@ class AuthController extends Controller
     public function register(AuthRegisterRequest $request)
     {
         $validator = $request->validated();
-        User::query()->create($validator);
-        return success();
+        $user = User::query()->create($validator);
+        return response()->json(['message'=>'User registered successfully', 'user'=> $user], 201);
     }
 
     public function login(AuthLoginRequest $request)
@@ -30,12 +30,12 @@ class AuthController extends Controller
             return response(['message' => 'Invalid Credentials'], 401);
         }
         $token = $user->createToken('token')->plainTextToken;
-        return success($token);
+        return response()->json(['token' => $token, 'user' => $user]);
     }
 
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
-        return success();
+        return response()->json(['message' => 'Logged out']);
     }
 }

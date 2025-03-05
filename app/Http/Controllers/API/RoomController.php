@@ -78,7 +78,7 @@ class RoomController extends Controller
     public function destroy(Room $room)
     {
         $room->delete();
-        return response()->json(['message' => 'Group deleted successfully.']);
+        return response()->json(['message' => 'Room deleted successfully.']);
 
     }
 }
