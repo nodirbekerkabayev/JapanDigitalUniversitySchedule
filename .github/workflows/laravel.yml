@@ -33,3 +33,25 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: php artisan test
+
+    deploy:
+      needs: laravel-tests
+      name: Deploy to AWS (EC2)
+      runs-on: ubuntu-latest
+      steps:
+        - name: executing remote ssh commands using private key
+          uses: apple boy/ssh-action@v1.1.0
+          with:
+            host: ${{ secrets.HOST }}
+            username: ${{ secrets.USERNAME }}
+            key: ${{ secrets.KEY }}
+            script: |
+              cd /var/www/
+              sudo docker compose down
+              sudo git reset --hard
+              sudo git pull
+              sudo docker compose up -d --build
+              sleep 2
+              sudo docker exec jdu_app php artisan migrate
+              sudo docker exec jdu_app php artisan optimize
+              echo "Deploy Completed!"
